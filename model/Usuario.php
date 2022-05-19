@@ -43,23 +43,36 @@ class Usuario extends Banco{
     }
 
     public function save(){
-        
+        $result = false;
+
+        $conexao = new Conexao();
+
+        $query = "insert into (login, senha, permissao) values (:login, :senha, :permissao)";
+
+        if($conn = $conexao->getConection()){
+            $stmt = $conn->prepare($query);
+            if($stmt->execute(array(':login'=>$this->login, ':senha' => $this->senha, ':permissao' => $this->permissao))){
+                $result = $stmt->rowCount();
+            }
+        }
+
+        return $result;
     }
 
     public function remove($id){
-        
+
     }
 
     public function find($id){
-        
+
     }
 
     public function count(){
-        
+
     }
 
     public function listAll(){
-        
+
     }
 
 
