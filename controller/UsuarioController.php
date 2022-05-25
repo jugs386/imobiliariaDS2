@@ -3,7 +3,7 @@ require_once '../model/Usuario.php';
 
 class UsuarioController{
 
-    public function salvar(){
+    public static function salvar(){
 
         $usuario = new Usuario();
 
@@ -12,6 +12,11 @@ class UsuarioController{
         $usuario->setPermissao($_POST['permissao']);
 
         $usuario->save();
+    }
+
+    public static function listar(){
+        $usuarios = new Usuario();
+        return $usuarios->listAll();
     }
 }
 

@@ -31,15 +31,17 @@ class Usuario extends Banco{
     }
 
     public function getPermissao(){
-        return $this->permissao;
+
+        if($this->permissao == 'A'){
+            $res = "Administrador";
+        }else{
+            $res = "Comum";
+        }
+        return $res;
     }
 
     public function setPermissao($permissao){
         $this->permissao = $permissao;
-    }
-
-    public function getId(){
-        return $this->id;
     }
 
     public function save(){
@@ -47,7 +49,7 @@ class Usuario extends Banco{
 
         $conexao = new Conexao();
 
-        $query = "insert into (login, senha, permissao) values (:login, :senha, :permissao)";
+        $query = "insert into usuario (login, senha, permissao) values (:login, :senha, :permissao)";
 
         if($conn = $conexao->getConection()){
             $stmt = $conn->prepare($query);
@@ -72,7 +74,23 @@ class Usuario extends Banco{
     }
 
     public function listAll(){
+        $result = false;
+        $conexao = new Conexao();
+        $conn = $conexao->getConection();
 
+        $query = "select * from usuario";
+
+        $stmt = $conn->prepare($query);
+
+        $result = array();
+
+        if($stmt->execute()){
+            while ($rs = $stmt->fetchObject(Usuario::class)){
+                $result[] = $rs;
+            }
+        }
+
+        return $result;
     }
 
 
