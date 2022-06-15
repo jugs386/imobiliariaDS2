@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Banco.php';
-require_once '../Conexao.php';
+require_once 'Conexao.php';
 
 class Usuario extends Banco{
 
@@ -30,6 +30,10 @@ class Usuario extends Banco{
         $this->senha = $senha;
     }
 
+    public function getSenha(){
+        return $this->senha;
+    }
+
     public function getPermissao(){
 
         if($this->permissao == 'A'){
@@ -48,25 +52,55 @@ class Usuario extends Banco{
         $result = false;
 
         $conexao = new Conexao();
-
-        $query = "insert into usuario (login, senha, permissao) values (:login, :senha, :permissao)";
-
         if($conn = $conexao->getConection()){
-            $stmt = $conn->prepare($query);
-            if($stmt->execute(array(':login'=>$this->login, ':senha' => $this->senha, ':permissao' => $this->permissao))){
-                $result = $stmt->rowCount();
+            if($this->id > 0){
+                //alteração
+                $query = "update usuario set login = :login, senha = :senha, permissao = :permissao where id = :id";
+                $stmt = $conn->prepare($query);
+                if($stmt->execute(array(':login'=>$this->login, ':senha' => $this->senha, ':permissao' => $this->permissao, ':id' => $this->id))){
+                    $result = $stmt->rowCount();
+                }
+
+            }else{
+                //cadastro
+                $query = "insert into usuario (login, senha, permissao) values (:login, :senha, :permissao)";
+                $stmt = $conn->prepare($query);
+                if($stmt->execute(array(':login'=>$this->login, ':senha' => $this->senha, ':permissao' => $this->permissao))){
+                    $result = $stmt->rowCount();
+                }
             }
+            
         }
 
         return $result;
     }
 
     public function remove($id){
+        $result = false;
+        $conexao = new Conexao();
+        $conn = $conexao->getConection();
+        $query = "delete from usuario where id = :id";
+        $stmt = $conn->prepare($query);
+        if($stmt->execute(array(':id' => $id))){
+            $result = true;
+        }
 
+        return $result;
     }
 
     public function find($id){
+        $result = false;
+        $conexao = new Conexao();
+        $conn = $conexao->getConection();
 
+        $query = "select * from usuario where id = :id";
+        $stmt = $conn->prepare($query);
+        if($stmt->execute(array(':id' => $id))){
+            if($stmt->rowCount() > 0){
+                $result = $stmt->fetchObject(Usuario::class);
+            }
+        }
+        return $result;
     }
 
     public function count(){
