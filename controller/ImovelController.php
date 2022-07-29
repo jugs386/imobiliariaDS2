@@ -19,6 +19,19 @@ class ImovelController{
         $imoveis = new Imovel();
         return $imoveis->listAll();
     }
+
+    public static function editar($id){
+        $imovel = new Imovel();
+
+        $imovel = $imovel->find($id);
+
+        return $imovel;
+    }
+
+    public static function excluir($id){
+        $imovel = new Imovel();
+        $imovel = $imovel->remove($id);
+    }
 }
 
 ?>

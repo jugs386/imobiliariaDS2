@@ -1,56 +1,51 @@
 <?php
-    require_once '../controller/ImovelController.php';
+//Chama uma função PHP que permite informar a classe e o Método que será acionado
+if(isset($_GET['tipo'])){
+  $imoveis = call_user_func(array('ImovelController','listarTipo'),$_GET['tipo']);
+}else{
+  $imoveis = call_user_func(array('ImovelController','listar'));
+}
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imobiliaria Viver Bem</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-</head>
-<body>
+<div class="container">
+
 <h1>Imóveis</h1>
-<hr />
-<div>
-<table class="table table-bordered table-striped" style="top:40px;">
-        <thead>
-            <tr>
-                <th>Descrição</th>
-                <th>Tipo</th>
-                <th><a href="">Novo</a></th>
-            </tr>
-        </thead>
+<hr>
+<table class="table" style="top:40px;">
         <tbody>
-            <?php
-                $imoveis = call_user_func(array('ImovelController','listar'));
-                if(isset($imoveis)){
-                    foreach($imoveis as $imovel){
-            ?>
-                        <tr>
-                            <td><?php echo $imovel->getDescricao();?></td>
-                            <td><?php echo $imovel->getTipo();?></td>
-                            <td>
-                                <a href="" class="btn btn-primary btn-sm">Editar</a>
-                                <a href="" class="btn btn-primary btn-sm">Excluir</a>
+        <?php 
+        $cont=0;
+        //Verifica se houve algum retorno
+        if (isset($imoveis) && !empty($imoveis)) {
+          foreach ($imoveis as $imovel) {
+            
+            if($cont==0){
+              echo '<tr>';
+            }
+            
+            echo '<td>';
+            echo '<p align="center"><img class="img-thumbnail" style="width: 75%;" src="data:'.$imovel->getFotoTipo().';base64,'.base64_encode($imovel->getFoto()).'"></p><br>';;
+            echo substr($imovel->getDescricao(),0,70).'...<br>';
+            echo '<strong>Valor: </strong>'.$imovel->getValor().'<br>';
+            $tipo = $imovel->getTipo()=='A'?'Aluguel':'Venda';
+            echo '<strong>Tipo: </strong>'.$tipo.'<br>';
+            echo '<a href="index.php?action=editar&id='.$imovel->getId().'&page=imovel" class="btn btn-primary btn-sm">Editar</a>&nbsp;&nbsp;&nbsp;';
+            echo '<a href="index.php?action=excluir&id='.$imovel->getId().'&page=imovel" class="btn btn-danger btn-sm">Excluir</a>';
+            $cont++;
+            if($cont==4)
+              $cont=0;
 
-                            </td>
-                        </tr>
-                        <?php
-                    }
-                }else{
+          }
+        }else{
             ?>
-            <tr>
-                <td colspan="3">Nenhum registro cadastrado</td>
-            </tr>
-            <?php
-                }
-            ?>
+                <tr>
+                    <td colspan="3">Nenhum registro encontrado</td>
+                </tr>
+                <?php
+        }
+?>
         </tbody>
-    </table>
+</table>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
-</body>
-</html>
+
