@@ -26,7 +26,6 @@ class ImovelController{
         $imovel->setDescricao($_POST['descricao']);
         $imovel->setValor($_POST['valor']);
         $imovel->setTipo($_POST['tipo']);
-        $imovel->setFoto($_POST['foto']);
 
         $imovel->save();
     }

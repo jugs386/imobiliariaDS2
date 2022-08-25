@@ -24,7 +24,7 @@ if(isset($_GET['tipo'])){
             }
             
             echo '<td>';
-            echo '<p align="center">'.$imovel->getFoto().'</p><br>';;
+            echo '<p align="center"><img class="img-thumbnail" style="width: 25%;" src="data:'.$imovel->getFotoTipo().';base64,'.base64_encode($imovel->getFoto()).'"></p><br>';;
             echo substr($imovel->getDescricao(),0,70).'...<br>';
             echo '<strong>Valor: </strong>'.$imovel->getValor().'<br>';
             $tipo = $imovel->getTipo()=='A'?'Aluguel':'Venda';

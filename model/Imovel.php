@@ -39,12 +39,7 @@ class Imovel extends Banco{
     }
 
     public function getTipo(){
-        if($this->tipo == 'A'){
-            $res = "Apartamento";
-        }else{
-            $res = "Casa";
-        }
-        return $res;
+        return $this->tipo;
     }
 
     public function setTipo($tipo){
@@ -87,8 +82,8 @@ class Imovel extends Banco{
                 }
             }else{
                 //cria query de inserção passando os atributos que serão armazenados
-                $query = "insert into imovel (id, descricao, foto, valor, tipo, fotoTipo, path) 
-                values (null,:descricao,:foto,:valor,:tipo)";
+                $query = "insert into imovel (id, descricao, foto, valor, tipo, fotoTipo) 
+                values (null,:descricao,:foto,:valor,:tipo, :fotoTipo)";
                 //Prepara a query para execução
                 $stmt = $conn->prepare($query);
                 //executa a query
