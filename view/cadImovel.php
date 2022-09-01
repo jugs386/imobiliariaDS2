@@ -18,11 +18,11 @@ ob_start();
                     <input type="file" class="form-control col-sm-8" name="foto" id="foto"/>
                 </div>
                 <?php
-                    if(isset($imovel) && !empty($imovel->getFoto())){
+                    if(isset($imovel) && !empty($imovel->getPath())){
                 ?>
                 <div class="form-group form-row">
                     <div class="text-center">
-                        <img class="img-thumbnail" style="width: 25%;" src="data:<?php echo $imovel->getFotoTipo();?>;base64,<?php echo base64_encode($imovel->getFoto());?>">
+                        <img class="img-thumbnail" style="width: 25%;" src="<?php echo $imovel->getPath();?>">
                     </div>
                 </div>
                 <?php
@@ -43,6 +43,7 @@ ob_start();
                 </div>
                 <div class="card-footer">
                     <input type="hidden" name="id" id="id" value="<?php echo isset($imovel)?$imovel->getId():''; ?>" />
+                    <input type="hidden" name="path" id="path" value="<?php echo isset($imovel)?$imovel->getPath():''; ?>" />
                     <input type="submit" class="btn btn-success" name="btnSalvar" id="btnSalvar">
                 </div>
             </div>
